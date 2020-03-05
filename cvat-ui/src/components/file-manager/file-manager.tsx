@@ -19,13 +19,14 @@ import Text from 'antd/lib/typography/Text';
 export interface Files {
     local: File[];
     share: string[];
+    s3: string[];
     remote: string[];
 }
 
 interface State {
     files: Files;
     expandedKeys: string[];
-    active: 'local' | 'share' | 'remote';
+    active: 'local' | 'share' | 's3' | 'remote';
 }
 
 interface Props {
@@ -42,6 +43,7 @@ export default class FileManager extends React.PureComponent<Props, State> {
             files: {
                 local: [],
                 share: [],
+                s3: [],
                 remote: [],
             },
             expandedKeys: [],
@@ -59,6 +61,7 @@ export default class FileManager extends React.PureComponent<Props, State> {
         return {
             local: active === 'local' ? files.local : [],
             share: active === 'share' ? files.share : [],
+            s3: active === 's3' ? files.s3 : [],
             remote: active === 'remote' ? files.remote : [],
         };
     }
@@ -80,6 +83,7 @@ export default class FileManager extends React.PureComponent<Props, State> {
             files: {
                 local: [],
                 share: [],
+                s3: [],
                 remote: [],
             },
         });
@@ -195,6 +199,28 @@ export default class FileManager extends React.PureComponent<Props, State> {
         );
     }
 
+    private renderS3Selector(): JSX.Element {
+        const { files } = this.state;
+
+        return (
+            <Tabs.TabPane key='s3' tab='S3 Buckets'>
+                <Input.TextArea
+                    placeholder='Enter one S3 address per line'
+                    rows={6}
+                    value={[...files.s3].join('\n')}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+                        this.setState({
+                            files: {
+                                ...files,
+                                remote: event.target.value.split('\n'),
+                            },
+                        });
+                    }}
+                />
+            </Tabs.TabPane>
+        );
+    }
+
     private renderRemoteSelector(): JSX.Element {
         const { files } = this.state;
 
@@ -235,6 +261,7 @@ export default class FileManager extends React.PureComponent<Props, State> {
                 >
                     { this.renderLocalSelector() }
                     { this.renderShareSelector() }
+                    { this.renderS3Selector() }
                     { withRemote && this.renderRemoteSelector() }
                 </Tabs>
             </>
