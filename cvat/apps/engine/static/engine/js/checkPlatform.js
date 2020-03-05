@@ -10,7 +10,7 @@
 
 // legacy syntax for IE support
 
-var supportedPlatforms = ['Chrome'];
+var supportedPlatforms = ['Chrome', 'Firefox'];
 if (supportedPlatforms.indexOf(platform.name) === -1) {
     try {
         document.documentElement.innerHTML = "<center><h1> Your browser is detected as " + platform.name +
