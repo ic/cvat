@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Must be run as root, or with `sudo`.
+
 set -e
 
 # Docker
@@ -13,6 +15,7 @@ chkconfig docker on
 curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" \
   -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+PATH=$PATH:/usr/local/bin
 
 # CVAT
 git clone https://github.com/ic/cvat
